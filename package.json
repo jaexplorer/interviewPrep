@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "autopush": "nodemon --watch . --ext js,ts,tsx,jsx,json,html,css,md --ignore node_modules --exec \"node git-auto-push.js\""
+  }
+}
