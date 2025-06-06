@@ -34,6 +34,37 @@ const binarySearch = (
   else return binarySearch(arr, target, left, mid - 1);
 };
 
+// Divide and Conquer
+// SCENARIO: Breaking up the sorting into smaller problems
+const mergeSort = (arr: number[]): number[] => {
+  if (arr.length <= 1) return arr;
+
+  const mid = Math.floor(arr.length / 2);
+  const left = mergeSort(arr.slice(0, mid));
+  const right = mergeSort(arr.slice(mid));
+
+  const merged: number[] = [];
+  let i = 0,
+    j = 0;
+
+  while (i < left.length && j < right.length) {
+    if (left[i] < right[j]) merged.push(left[i++]);
+    else merged.push(right[j++]);
+  }
+
+  return [...merged, ...left.slice(i), ...right.slice(j)];
+};
+
+const quickSort = (arr: number[]): number[] => {
+  if (arr.length <= 1) return arr;
+
+  const end = arr.length - 1;
+  const left = arr.slice(0, end).filter((x) => x < arr[end]);
+  const right = arr.slice(0, end).filter((x) => x >= arr[end]);
+
+  return [...quickSort(left), arr[end], ...quickSort(right)];
+};
+
 // Binary Tree Traversal
 // SCENARIO: Visiting nodes in a tree in a particular order
 // Pre-order: Visit node → left subtree → right subtree
@@ -110,7 +141,86 @@ const bfsGraph = (graph: Record<string, string[]>, start: string): string[] => {
   return result;
 };
 
+const bfsGrid = (
+  grid: string[][],
+  startRow: number,
+  startCol: number
+): number => {
+  const visited = grid.map((row) => row.map(() => false));
+  const queue: number[][] = [[startRow, startCol]];
+  let count = 0;
+
+  while (queue.length) {
+    const [row, col] = queue.shift()!;
+    if (
+      row < 0 ||
+      row >= grid.length ||
+      col < 0 ||
+      col >= grid[0].length ||
+      visited[row][col] ||
+      grid[row][col] !== "1" // Condition
+    )
+      continue;
+
+    visited[row][col] = true;
+    count++;
+
+    for (const [dr, dc] of [
+      [0, 1],
+      [1, 0],
+      [0, -1],
+      [-1, 0],
+    ]) {
+      queue.push([row + dr, col + dc]);
+    }
+  }
+
+  return count;
+};
+
 // DFS
+// SCENERIO: Search deep before trying another path
+// Eg. Levels on a tree, on a graph or 2D Grid
+const dfsTree = (node: TreeNode | null) => {
+  if (!node) return;
+
+  for (const child of [node.left, node.right]) {
+    dfsTree(child);
+  }
+};
+
+const dfsGraph = (
+  graph: Record<string, string[]>,
+  node: string,
+  visited = new Set<string>()
+) => {
+  if (visited.has(node)) return;
+
+  visited.add(node);
+
+  for (const neighbor of graph[node]) {
+    dfsGraph(graph, neighbor, visited);
+  }
+};
+
+const dfsGrid = (
+  grid: number[][],
+  r: number,
+  c: number,
+  visited: boolean[][] = grid.map((row) => row.map(() => false))
+) => {
+  // Boundary & visited check
+  if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length) return;
+  if (visited[r][c] || grid[r][c] === 0) return;
+
+  visited[r][c] = true;
+
+  // Explore neighbors (up, down, left, right)
+  dfsGrid(grid, r - 1, c, visited);
+  dfsGrid(grid, r + 1, c, visited);
+  dfsGrid(grid, r, c - 1, visited);
+  dfsGrid(grid, r, c + 1, visited);
+};
 
 // Two pointers
 // SCENARIO:
@@ -134,7 +244,7 @@ const twoSumSorted = (nums: number[], target: number): number[] => {
 // - Reverse a string in place
 // ["h", "e", "l", "l", "o"] -> ["o", "l", "l", "e", "h"]
 // - Given an array, check from either end whether it is identical.
-const reverseString = (s: string[]): void => {
+const reverseString = (s: string[]) => {
   let left = 0;
   let right = s.length - 1;
 
@@ -162,8 +272,6 @@ const maxSumSlidingWindow = (nums: number[], k: number): number => {
 
   return maxSum;
 };
-
-// Backtracking
 
 // Prefix sum
 // SCENARIO: Given an array and two index's, calculate the sum of the numbers between two index's multiple times
@@ -322,4 +430,102 @@ const mergeIntervals = (intervals: number[][]): number[][] => {
   }
 
   return merged;
+};
+
+// Backtracking
+// SCENERIO: NQueen, Sudoku, permutations, combinations, find possible all paths
+// function backtrack(...) {
+//   if (goalReached) {
+//     saveSolution()
+//     return
+//   }
+
+//   for (each choice) {
+//     makeChoice()
+//     backtrack()
+//     undoChoice()
+//   }
+// }
+const subsets = (nums: number[]): number[][] => {
+  const result: number[][] = [];
+
+  const backtrack = (start: number, path: number[]) => {
+    result.push([...path]);
+
+    for (let i = start; i < nums.length; i++) {
+      path.push(nums[i]); // choose
+      backtrack(i + 1, path); // explore
+      path.pop(); // un-choose (backtrack)
+    }
+  };
+
+  backtrack(0, []);
+  return result;
+};
+
+const permute = (nums: number[]): number[][] => {
+  const result: number[][] = [];
+
+  const backtrack = (path: number[], used: boolean[]) => {
+    if (path.length === nums.length) {
+      result.push([...path]);
+      return;
+    }
+
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) continue;
+      path.push(nums[i]); // choose
+      used[i] = true;
+      backtrack(path, used); // explore
+      path.pop(); // un-choose (backtrack)
+      used[i] = false;
+    }
+  };
+
+  backtrack(
+    [],
+    nums.map(() => false)
+  );
+  return result;
+};
+
+const solveNQueens = (n: number): string[][] => {
+  const results: string[][] = [];
+
+  const cols: number[] = []; // Track which column each row has a queen
+  const diag1: number[] = []; // Track main diagonals (row - col)
+  const diag2: number[] = []; // Track anti-diagonals (row + col)
+
+  const backtrack = (row: number, board: string[]) => {
+    if (row === n) {
+      results.push([...board]);
+      return;
+    }
+
+    for (let col = 0; col < n; col++) {
+      const d1 = row - col;
+      const d2 = row + col;
+
+      if (cols.includes(col) || diag1.includes(d1) || diag2.includes(d2))
+        continue;
+
+      // Add to tracking arrays
+      cols.push(col);
+      diag1.push(d1);
+      diag2.push(d2);
+
+      const rowStr = ".".repeat(col) + "Q" + ".".repeat(n - col - 1);
+      board.push(rowStr);
+
+      backtrack(row + 1, board);
+
+      board.pop();
+      cols.pop();
+      diag1.pop();
+      diag2.pop();
+    }
+  };
+
+  backtrack(0, []);
+  return results;
 };
