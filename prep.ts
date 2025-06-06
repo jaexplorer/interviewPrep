@@ -149,6 +149,7 @@ const bfsGrid = (
   const visited = grid.map((row) => row.map(() => false));
   const queue: number[][] = [[startRow, startCol]];
   let count = 0;
+  //  let result: number[][] = grid.map(row => [...row]);
 
   while (queue.length) {
     const [row, col] = queue.shift()!;
@@ -158,12 +159,14 @@ const bfsGrid = (
       col < 0 ||
       col >= grid[0].length ||
       visited[row][col] ||
-      grid[row][col] !== "1" // Condition
+      grid[row][col] !== "1" // Where your standing, starting, target, including
+      // grid[row][col] !== grid[sr][sc]
     )
       continue;
 
     visited[row][col] = true;
     count++;
+    // result[row][col] = color;
 
     for (const [dr, dc] of [
       [0, 1],
