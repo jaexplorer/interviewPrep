@@ -1,0 +1,48 @@
+<div id="total">Loading todos...</div>
+<div id="todoList"></div>
+<button id="loadMore">Load More</button>
+
+<script>
+  const todoList = document.getElementById("todoList");
+  const totalDisplay = document.getElementById("total");
+  const loadMoreBtn = document.getElementById("loadMore");
+
+  let skip = 0;
+  const limit = 20;
+  let totalTodos = 0;
+
+  async function fetchTodos() {
+    const res = await fetch(
+      `https://dummyjson.com/todos?limit=${limit}&skip=${skip}`
+    );
+    const data = await res.json();
+
+    // Update total count on first load
+    if (skip === 0) {
+      totalTodos = data.total;
+      totalDisplay.textContent = `Total Todos: ${totalTodos}`;
+    }
+
+    data.todos.forEach((todo) => {
+      const div = document.createElement("div");
+      div.className = "todo";
+      div.textContent = `${todo.id}. ${todo.todo} ${
+        todo.completed ? "✅" : ""
+      }`;
+      todoList.appendChild(div);
+    });
+
+    skip += limit;
+
+    // Hide button after reaching 100 todos
+    if (skip >= 100 || skip >= totalTodos) {
+      loadMoreBtn.style.display = "none";
+    }
+  }
+
+  // Initial load
+  fetchTodos();
+
+  // Load more on button click
+  loadMoreBtn.addEventListener("click", fetchTodos);
+</script>
