@@ -1,0 +1,73 @@
+:root {
+  font-family: Quicksand, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  background-color: #dbe2e6;
+}
+
+#root {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  font-style: lighter;
+  font-weight: 100;
+  src: url('./assets/fonts/Quicksand/Quicksand-Light.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 200;
+  src: url('./assets/fonts/Quicksand/Quicksand-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 300;
+  src: url('./assets/fonts/Quicksand/Quicksand-Medium.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./assets/fonts/Quicksand/Quicksand-SemiBold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  font-style: bold;
+  font-weight: 500;
+  src: url('./assets/fonts/Quicksand/Quicksand-Bold.ttf');
+  font-display: swap;
+}
+
+html {
+  * {
+    font-family: 'Quicksand', Helvetica, Arial, sans-serif;
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "interview",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "test": "vitest --ui"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vitest/ui": "^3.2.3",
+    "axios": "^0.27.2",
+    "chalk": "^5.4.1",
+    "moment": "^2.29.3",
+    "vitest": "^3.2.3"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "src/data/*",
+      "src/results/*"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.35",
+    "concurrently": "^7.2.1",
+    "nodemon": "^2.0.16",
+    "typescript": "^5.8.3"
+  }
+}
