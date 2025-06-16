@@ -1,5 +1,13 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 // import { myFunction } from "./index";
+
+// beforeEach(() => {
+//   vi.useFakeTimers();
+// });
+
+// afterEach(() => {
+//   vi.useRealTimers();
+// });
 
 const testCases = [
   { input: 2, expected: 4 },

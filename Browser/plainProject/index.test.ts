@@ -1,11 +1,33 @@
 import "@testing-library/jest-dom";
-import { expect, test } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { readFileSync } from "fs";
 import { join } from "path";
 import userEvent from "@testing-library/user-event";
 import { showCurrentTime } from "./index";
 import { screen } from "@testing-library/dom";
 import moment from "moment";
+
+// beforeEach(() => {
+//   vi.useFakeTimers();
+// });
+
+// afterEach(() => {
+//   vi.useRealTimers();
+// });
+
+// const testCases = [
+//   { input: 2, expected: 4 },
+//   { input: 3, expected: 6 },
+//   { input: 0, expected: 0 },
+// ];
+
+// describe("Test usecases", () => {
+//   testCases.forEach(({ input, expected }) => {
+//     test(`myFunction(${input}) === ${expected}`, () => {
+//       expect(myFunction(input)).toBe(expected);
+//     });
+//   });
+// });
 
 beforeEach(() => {
   const html = readFileSync(join(__dirname, "index.html"), "utf-8");
